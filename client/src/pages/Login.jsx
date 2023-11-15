@@ -58,7 +58,7 @@ export default function Login() {
                 <div className="flex flex-col gap-1 mt-10">
                     <h1 className="text-2xl font-bold">Connection</h1>
                     <p className="text-sm">
-                        Vous n'avez pas de compte ? <Link to="/login"><span className="text-blue-600 underline hover:text-blue-800">S'inscrire</span></Link>
+                        Vous n'avez pas de compte ? <Link to="/register"><span className="text-blue-600 underline hover:text-blue-800">S'inscrire</span></Link>
                     </p>
                 </div>
                 <form className="mt-10 w-full flex flex-col gap-8" onSubmit={handleSubmit}>
