@@ -1,5 +1,16 @@
-export const getUsers = (req, res) => {
-    res.send("getting all users")
+import User from '../models/users.model.js'
+
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find().exec().lean()
+        if(!users.lenght) {
+            return res.status(400).json({ message: `Aucun usager existant` })
+        }
+
+        res.status(200).json(users)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const getUser = (req, res) => {

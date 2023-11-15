@@ -34,3 +34,14 @@ mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB')
     app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`))
 })
+
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500
+    const message = err.message || 'Problème interne au server'
+    return res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message
+    })
+})
+
