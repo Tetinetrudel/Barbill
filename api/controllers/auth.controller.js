@@ -56,12 +56,12 @@ export const login = async (req, res, next) => {
             .status(200)
             .json(rest)
 
-        } catch (error) {
+    } catch (error) {
         next(error)
-        }
-  }
+    }
+}
 
-  export const logout = async (req, res, next) => {
+export const logout = async (req, res, next) => {
   try {
     res.clearCookie('access_token')
     res.status(200).json(`L'usager a bien été déconnecté`)
