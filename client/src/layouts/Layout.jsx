@@ -11,7 +11,7 @@ export default function Layout() {
       <nav className="col-span-2">
         <Sidebar />
       </nav>
-      <main className='col-span-10 w-11/12 mx-auto'>
+      <main className='col-span-10 w-11/12'>
         <Outlet />
       </main>
     </div>
