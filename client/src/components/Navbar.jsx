@@ -86,17 +86,17 @@ export default function Navbar() {
                     <button 
                         className="border border-zinc-400 rounded-md bg-white outline-none py-1 px-4 mb-3 hover:shadow-md w-32 text-sm"
                         onClick={handleProfile}
-                    >Profile</button>
+                    >Voir le profile</button>
                 </div>
                 <div className="flex flex-col justify-start gap-4 mt-3">
                     <div className="px-3">
-                        <div onClick={handleSettings} className='cursor-pointer flex gap-1 items-center bg-transparent rounded-md hover:bg-zinc-200 duration-200 ease-in-out transition py-1 px-4'>
+                        <div onClick={handleSettings} className='cursor-pointer flex gap-1 items-center bg-transparent rounded-md hover:bg-zinc-100 duration-200 ease-in-out transition py-1 px-4'>
                             <BiCog className="text-md"/>
                             <p className="text-sm">Paramêtres</p>
                         </div>
                     </div>
                     <div className="px-3">
-                        <div onClick={handleLogout} className='flex cursor-pointer gap-1 items-center bg-transparent rounded-md hover:bg-zinc-200 duration-200 ease-in-out transition py-1 px-4'>
+                        <div onClick={handleLogout} className='flex cursor-pointer gap-1 items-center bg-transparent rounded-md hover:bg-zinc-100 duration-200 ease-in-out transition py-1 px-4'>
                             <BiLogOut className="text-md"/>
                             <p className="text-sm">Se déconnecter</p>
                         </div>

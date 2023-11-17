@@ -2,9 +2,13 @@ import jwt from 'jsonwebtoken';
 import { errorHandler } from './errorHandler.js';
 
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies.access_token;
+  const authHeader = req.headers.authorization || req.headers.Authorization
 
-  if (!token) return next(errorHandler(401, `Vous n'êtes pas autorisé`));
+  if (!authHeader?.startsWith('Bearer ')) {
+      return next(errorHandler(401, `Vous n'êtes pas autorisé`))
+  }
+
+  const token = authHeader.split(' ')[1]
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return next(errorHandler(403, 'Accès interdit'));
@@ -12,4 +16,4 @@ export const verifyToken = (req, res, next) => {
     req.user = user;
     next();
   });
-};
+}

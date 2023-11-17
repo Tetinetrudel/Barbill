@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import FormLogo from "../components/logo/FormLogo"
+import BeatLoader from 'react-spinners/BeatLoader'
 
 import { FaLock } from 'react-icons/fa'
 import { MdAlternateEmail } from "react-icons/md"
@@ -91,8 +92,8 @@ export default function Login() {
                             />
                         }
                     </div>
-                    <button className="bg-blue-600 hover:bg-blue-800 rounded-md p-1 outline-none border-none text-zinc-50">
-                        {loading ? "Loading ..." : "Connection"}
+                    <button className="bg-blue-600 hover:bg-blue-800 rounded-md p-1 flex items-center justify-center outline-none border-none text-zinc-50">
+                        {loading ? <BeatLoader color={"#fff"} size={10} />: "Connection"}
                     </button>
                 </form>
                 {error ? <p className="text-sm text-red-500 mt-2">{error}</p> : ""}
