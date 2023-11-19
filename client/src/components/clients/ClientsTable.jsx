@@ -1,10 +1,11 @@
-export default function ClientsTable({ filteredClients }) {
+export default function ClientsTable({ filteredClients, setClientId }) {
   return (
     <section className="mt-6">
         {!filteredClients.length ? <p>Aucun client</p> 
         : (
             filteredClients.map((item) => (
                 <div 
+                    onClick={() => setClientId(item._id)}
                     key={item._id}
                     className="flex justify-between items-start hover:bg-zinc-100 p-2 rounded-md"
                 >

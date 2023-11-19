@@ -19,6 +19,9 @@ export const addClient = async (req, res, next) => {
     const { name, email } = req.body
     const { id } = req.user 
     try {
+        if(!name || !password) {
+            return next(errorHandler(401, `Tous les champs doivent être complétés`))
+        }
         const existingClient = await Client.findOne({ email })
         if(existingClient) {
             return next(errorHandler(409, `Un client avec le courriel ${email} existe déjà`))

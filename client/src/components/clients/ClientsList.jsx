@@ -12,7 +12,7 @@ function normalizeString(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
   }
 
-export default function ClientsList({ clients, filteredClients, setFilteredClients, isUpdated, setIsUpdated }) {
+export default function ClientsList({ clients, setClientId, filteredClients, setFilteredClients, isUpdated, setIsUpdated }) {
     const [isFilterOpen, setIsFilterOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
@@ -30,7 +30,7 @@ export default function ClientsList({ clients, filteredClients, setFilteredClien
             <div className="flex flex-col gap-4">
                 <h1 className="text-xl text-blue-600 font-bold">Clients</h1>
                 <div className="flex gap-2 items-center">
-                    <div className="relative w-48">
+                    <div className="relative w-56">
                         <BiSearch className="absolute top-1/2 -translate-y-1/2 left-2 text-blue-600 text-md"/>
                         <input 
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -70,7 +70,7 @@ export default function ClientsList({ clients, filteredClients, setFilteredClien
                     </button>
                 </div>
             </div>
-            <ClientsTable filteredClients={filteredClients} />
+            <ClientsTable setClientId={setClientId} filteredClients={filteredClients} setSearchQuery={setSearchQuery} />
             {isModalOpen && (
                 <Modal title="Ajouter un client" isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
                     <AddClient setIsModalOpen={setIsModalOpen} isUpdated={isUpdated} setIsUpdated={setIsUpdated} />

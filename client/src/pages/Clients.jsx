@@ -13,6 +13,9 @@ export default function Clients() {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const [isUpdated, setIsUpdated] = useState(false)
+  const [clientId, setClientId] = useState(undefined)
+
+  console.log(clientId)
 
   const handleGetClients = async () => {
     try {
@@ -48,9 +51,10 @@ export default function Clients() {
 
   return (
     <section className="flex h-full">
-      <div className='flex-none w-80'>
+      <div className='flex-none w-96'>
         <ClientsList 
           clients={clients} 
+          setClientId={setClientId}
           filteredClients={filteredClients} 
           setFilteredClients={setFilteredClients} 
           isUpdated={isUpdated} 
@@ -58,7 +62,7 @@ export default function Clients() {
         />
       </div>
       <div className="flex-1">
-        <ClientDetails />
+        <ClientDetails clients={clients} clientId={clientId} setClientId={setClientId} />
       </div>
     </section>
   )
