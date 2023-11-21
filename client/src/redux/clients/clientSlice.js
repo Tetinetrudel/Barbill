@@ -11,14 +11,18 @@ const clientSlice = createSlice({
     getClients: (state, action) => {
       state.clients = action.payload
     },
+    addClient: (state, action) => {
+        state.clients = [...state.clients, action.payload]
+    },
     deleteClient: (state, action) => {
         state.clients =  state.clients.filter((client) => client._id !== action.payload)
-    }
+    },
   },
 })
 
 export const {
   getClients,
+  addClient,
   deleteClient
 } = clientSlice.actions
 

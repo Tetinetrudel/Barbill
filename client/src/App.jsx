@@ -20,13 +20,10 @@ import Profile from './pages/Profile'
 
 export default function App() {
   const { accessToken } = useSelector((state) => state.user)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
   const dispatch = useDispatch()
 
   useEffect(() => {
     const handleGetClients = async () => {
-      setLoading(true)
       try {
         const response = await fetch(`${API_URL}/clients`, {
           method: 'GET',
@@ -38,16 +35,12 @@ export default function App() {
         const data = await response.json()
 
         if(response.success === false) {
-          setError(data.message)
-          setLoading(false)
+          console.error(data.message)
         }
 
         dispatch(getClients(data))
-        setLoading(false)
-        setError("")
       } catch (error) {
-        setLoading(false)
-        setError(error)
+        console.error(error)
       }
     }
     handleGetClients()
