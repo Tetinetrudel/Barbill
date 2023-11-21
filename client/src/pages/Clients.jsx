@@ -1,69 +1,18 @@
-import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useState } from 'react'
 
-import ClientsList from '../components/clients/ClientsList'
-import ClientDetails from '../components/clients/ClientDetails'
-
-import { API_URL } from '../utils/apiUrl'
+import ClientsList from '../features/clients/ClientsList'
+import ClientDetails from '../features/clients/ClientDetails'
 
 export default function Clients() {
-  const { accessToken } = useSelector((state) => state.user)
-  const [clients, setClients] = useState([])
-  const [filteredClients, setFilteredClients] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
-  const [isUpdated, setIsUpdated] = useState(false)
   const [clientId, setClientId] = useState(undefined)
-
-  console.log(clientId)
-
-  const handleGetClients = async () => {
-    try {
-      setIsLoading(true)
-      const res = await fetch(`${API_URL}/clients`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-      })
-      const data = await res.json()
-
-      if (data.success === false) {
-        setIsLoading(false)
-        setErrorMessage(data.message)
-        return
-      }
-      setClients(data)
-      setFilteredClients(data)
-      setIsLoading(false)
-      setErrorMessage(null)
-      setIsUpdated(false)
-    } catch (error) {
-      setIsLoading(false)
-      setErrorMessage(error.message)
-    }
-  }
-
-  useEffect(() => {
-    handleGetClients()
-  }, [isUpdated])
-
   return (
-    <section className="flex h-full">
-      <div className='flex-none w-96'>
-        <ClientsList 
-          clients={clients} 
-          setClientId={setClientId}
-          filteredClients={filteredClients} 
-          setFilteredClients={setFilteredClients} 
-          isUpdated={isUpdated} 
-          setIsUpdated={setIsUpdated} 
-        />
-      </div>
-      <div className="flex-1">
-        <ClientDetails clients={clients} clientId={clientId} setClientId={setClientId} />
-      </div>
-    </section>
+    <div className='flex w-full h-full'>
+        <div className="w-80 flex-none">
+            <ClientsList setClientId={setClientId} />
+        </div>
+        <div className="flex-1">
+            <ClientDetails clientId={clientId} setClientId={setClientId} />
+        </div>
+    </div>
   )
 }

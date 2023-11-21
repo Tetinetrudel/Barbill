@@ -53,6 +53,7 @@ const userSlice = createSlice({
     },
     signOutUserSuccess: (state) => {
       state.currentUser = null
+      state.token = null
       state.loading = false
       state.error = null
     },

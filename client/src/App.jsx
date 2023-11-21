@@ -1,5 +1,12 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
+
+import { useSelector, useDispatch } from 'react-redux'
+
+import { getClients } from './redux/clients/clientSlice'
+
+import { API_URL } from './utils/apiUrl'
+
 
 import Layout from './layouts/Layout'
 import PrivateRoute from './layouts/PrivateRoute'
@@ -12,6 +19,40 @@ import Settings from './pages/Settings'
 import Profile from './pages/Profile'
 
 export default function App() {
+  const { accessToken } = useSelector((state) => state.user)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const handleGetClients = async () => {
+      setLoading(true)
+      try {
+        const response = await fetch(`${API_URL}/clients`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          }
+        })
+        const data = await response.json()
+
+        if(response.success === false) {
+          setError(data.message)
+          setLoading(false)
+        }
+
+        dispatch(getClients(data))
+        setLoading(false)
+        setError("")
+      } catch (error) {
+        setLoading(false)
+        setError(error)
+      }
+    }
+    handleGetClients()
+  }, [accessToken])
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />

@@ -44,3 +44,19 @@ export const addClient = async (req, res, next) => {
         next(error)
     }
 }
+
+export const deleteClient = async (req, res, next) => {
+    const { id } = req.params
+    console.log(id)
+    try {
+        if(!id) {
+            return next(errorHandler(404, `Le client n'existe pas.`))
+        }
+
+        await Client.findByIdAndDelete(id)
+
+        res.json({ message: `Client supprimé avec succès `})
+    } catch (error) {
+        next(error.message)
+    }
+}
