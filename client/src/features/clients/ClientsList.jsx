@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 import ClientsListHeader from './ClientsListHeader'
 
 export default function ClientsList({ setClientId }) {
     const { clients } = useSelector((state) => state.client)
-    const [filteredClient, setFilteredClient] = useState(clients)
+    const [filteredClient, setFilteredClient] = useState([])
+
+    useEffect(() => {
+        setFilteredClient(clients)
+    }, [clients])
 
     return (
         <div className="h-full border-r border-r-zinc-200 flex flex-col gap-2">

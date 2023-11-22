@@ -11,12 +11,13 @@ import { BiEdit, BiTrash } from 'react-icons/bi'
 import Modal from '../../components/Modal'
 import ClientBill from './ClientBill'
 import ClientCards from './ClientCards'
+import ClientEdit from './ClientEdit'
 
 export default function ClientDetails({ clientId, setClientId }) {
     const { clients } = useSelector((state) => state.client)
     const { accessToken } = useSelector((state) => state.user) 
     const [actionsOpen, setActionsOpen] = useState(false)
-    const [editOpen, setEditOpen] = useState(false)
+    const [editClientOpen, setEditClientOpen] = useState(false)
     const dispatch = useDispatch()
 
     if(!clientId) {
@@ -32,7 +33,7 @@ export default function ClientDetails({ clientId, setClientId }) {
     const handleAction = () => setActionsOpen(!actionsOpen)
 
     const handleEdit = () => {
-        setEditOpen(!editOpen)
+        setEditClientOpen(!editClientOpen)
         setActionsOpen(!actionsOpen)
     }
 
@@ -46,10 +47,12 @@ export default function ClientDetails({ clientId, setClientId }) {
                     'Authorization': `Bearer ${accessToken}`
                 }
             })
-            await res.json()
-            if(res.success === false) {
+            const data = await res.json()
+            if(data.success === false) {
                 console.log(error)
+                return
             }
+            
             dispatch(deleteClient(clientId))
             setClientId(undefined)
         } catch (error) {
@@ -98,6 +101,11 @@ export default function ClientDetails({ clientId, setClientId }) {
                 <ClientBill />
                 <ClientCards />
             </div>
+            {editClientOpen && (
+                <Modal title="Modifier un client" isModalOpen={editClientOpen} setIsModalOpen={setEditClientOpen}>
+                    <ClientEdit clientId={clientId} setEditClientOpen={setEditClientOpen} />
+                </Modal>
+            )}
         </div>
       )
 }

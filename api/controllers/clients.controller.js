@@ -45,6 +45,37 @@ export const addClient = async (req, res, next) => {
     }
 }
 
+export const updateClient = async (req, res, next) => {
+    const { id } = req.params
+    const { name, email } = req.body
+    try {
+        if(!id) {
+            return next(errorHandler(409, `Vous devez sélectionner un identifiant valide`))
+        }
+
+        const client = await Client.findById(id)
+        if(!client) {
+            return next(errorHandler(404, `Le client recherché n'existe pas. Veuillez recommencer votre recherche`))
+        }
+
+        const existingClient = await Client.findOne({ email })
+
+        if (existingClient && existingClient._id.toString() !== id) {
+            return next(errorHandler(409, `Seulement un client peut utiliser le courriel ${email}`))
+        }
+
+        client.name = name
+        client.email = email
+
+        await client.save()
+
+        res.json(client)
+    } catch (error) {
+        next(error)
+        console.log(error)
+    }
+}
+
 export const deleteClient = async (req, res, next) => {
     const { id } = req.params
     console.log(id)

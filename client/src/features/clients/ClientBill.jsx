@@ -20,7 +20,7 @@ export default function ClientBill() {
         </div>
         {addToBillOpen && (
           <Modal title="Ajouter à la facture" isModalOpen={addToBillOpen} setIsModalOpen={setAddToBillOpen}>
-            <addToBillOpen />
+            <AddToBill />
           </Modal>
         )}
     </section>

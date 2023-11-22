@@ -16,6 +16,9 @@ export default function ClientsListHeader({ clients, setFilteredClient }) {
     const [addClientOpen, setAddClientOpen] = useState(false)
 
     useEffect(() => {
+        if(searchQuery === "") {
+            setFilteredClient(clients)
+        }
         const normalizedQuery = normalizeString(searchQuery)
         if(!clients) return
         const filtered = clients.filter((item) => normalizeString(item.name).includes(normalizedQuery)

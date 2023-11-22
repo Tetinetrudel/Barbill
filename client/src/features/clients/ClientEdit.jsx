@@ -1,12 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { addClient } from '../../redux/clients/clientSlice'
+import { updateClient } from '../../redux/clients/clientSlice'
 import { API_URL } from '../../utils/apiUrl'
 
-export default function ClientAdd({ setAddClientOpen }) {
+export default function ClientEdit({ setEditClientOpen, clientId }) {
     const { accessToken } = useSelector((state) => state.user)
-    const [formData, setFormData] = useState({})
+    const { clients } = useSelector((state) => state.client)
+    const client = clients.filter((item) => item._id === clientId)
+    const [formData, setFormData] = useState({
+        name: client[0].name,
+        email: client[0].email
+    })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const dispatch = useDispatch()
@@ -22,8 +27,8 @@ export default function ClientAdd({ setAddClientOpen }) {
         e.preventDefault()
         try {
             setLoading(true)
-            const res = await fetch(`${API_URL}/clients`, {
-                method: 'POST',
+            const res = await fetch(`${API_URL}/clients/${clientId}`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}` 
@@ -37,14 +42,19 @@ export default function ClientAdd({ setAddClientOpen }) {
                 setError(data.message)
                 return
             }
+
             setLoading(false)
-            setAddClientOpen(false)
-            dispatch(addClient(data))
+            setEditClientOpen(false)
+            dispatch(updateClient(data))
         } catch (error) {
             setLoading(false)
             setError(error.message)
         }
     }
+
+    useEffect(() => {
+        setError("")
+    }, [formData])
 
   return (
     <form onSubmit={handleSubmit} className='flex flex-col gap-6 p-6 w-full'>
@@ -56,6 +66,7 @@ export default function ClientAdd({ setAddClientOpen }) {
                 id="name"
                 autoComplete='off'
                 placeholder='Nom complet'
+                value={formData.name}
                 onChange={handleChange}
             />
         </div>
@@ -67,12 +78,14 @@ export default function ClientAdd({ setAddClientOpen }) {
                 id="email"
                 autoComplete='off'
                 placeholder='Courriel'
+                value={formData.email}
                 onChange={handleChange}
             />
         </div>
         <button className='bg-blue-600 hover:opacity-95 text-white p-1 rounded-md text-sm'>
-            {loading ? "Loading ..." : "Ajouter" }
+            {loading ? "Loading ..." : "Modifier" }
         </button>
+        {error && ( <p className="text-xs text-red-600">{error}</p>)}
     </form>
   )
 }
