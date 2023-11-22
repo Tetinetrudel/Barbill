@@ -1,4 +1,5 @@
 import Category from '../models/categories.model.js'
+import { errorHandler } from '../middleware/errorHandler.js'
 
 export const getCategories = async (req, res, next) => {
     const { id } = req.user
@@ -27,7 +28,7 @@ export const addCategory = async (req, res, next) => {
             name
         })
 
-        const category = newCategory.save()
+        const category = await newCategory.save()
 
         res.json(category)
     } catch (error) {
