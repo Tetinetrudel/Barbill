@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { TbFilterDiscount, TbFilterDollar, TbFilterDown, TbFilterUp, TbFilterPlus, TbDotsCircleHorizontal } from "react-icons/tb"
 
 export default function ClientsFilter({ clients, setFilteredClient }) {
     const [filterOpen, setFilterOpen] = useState(false)
+    const menuRef = useRef()
 
     const handleAtoZ = () => {
         const filter = [].concat(clients).sort((a,b) => a.name > b.name ? 1 : -1)
@@ -29,11 +30,24 @@ export default function ClientsFilter({ clients, setFilteredClient }) {
         setFilterOpen(!filterOpen)
     }
 
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+          setFilterOpen(false)
+        }
+    }
+    
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
   return (
     <div className='relative bg-white hover:shadow-md border border-zinc-300 rounded-md p-1 cursor-pointer flex items-center justify-center'>
         <TbFilterPlus onClick={() => setFilterOpen(!filterOpen)}/>
         {filterOpen && (
-            <div className="absolute top-10 right-0 border bg-white shadow-md p-2 rounded-md flex flex-col gap-1 justify-start w-36">
+            <div ref={menuRef} className="absolute top-10 right-0 border bg-white shadow-md p-2 rounded-md flex flex-col gap-1 justify-start w-36">
                 <div 
                     className="flex items-center gap-2 rounded-md p-1 hover:bg-zinc-100 cursor-pointer"
                     onClick={handleAtoZ}

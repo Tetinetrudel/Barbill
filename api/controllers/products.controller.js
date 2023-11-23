@@ -30,6 +30,7 @@ export const getProduct = async (req, res, next) => {
         next(error)
     }
 }
+
 export const addProduct = async (req, res, next) => {
     const { image, name, category, quantity, price } = req.body
     try {

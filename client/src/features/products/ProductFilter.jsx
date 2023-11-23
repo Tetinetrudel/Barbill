@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
 import { BsSearch } from 'react-icons/bs'
@@ -16,6 +16,8 @@ export default function ProductFilter({ setFilteredProducts }) {
     const [searchQuery, setSearchQuery] = useState("")
     const [filterOpen, setFilterOpen] = useState(false)
     const [filterByCategoryOpen, setFilterByCategoryOpen] = useState(false)
+    const menuRef = useRef()
+    const menuCatRef = useRef()
 
     useEffect(() => {
         if(searchQuery === "") {
@@ -74,6 +76,21 @@ export default function ProductFilter({ setFilteredProducts }) {
         setFilterOpen(false)
     }
 
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target) 
+            || menuCatRef.current && !menuCatRef.current.contains(event.target)) {
+          setFilterOpen(false)
+          setFilterByCategoryOpen(false)
+        }
+    }
+    
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
   return (
     <div className='flex items-center gap-4 w-full'>
         <div className='relative w-64'>
@@ -87,7 +104,7 @@ export default function ProductFilter({ setFilteredProducts }) {
         <div className='relative bg-white hover:shadow-md border border-zinc-300 rounded-md p-1 cursor-pointer flex items-center justify-center'>
             <TbFilterPlus onClick={handleFilter}/>
             {filterOpen && (
-                <div className="absolute top-10 right-0 border bg-white shadow-md p-2 rounded-md flex flex-col gap-1 justify-start w-36">
+                <div ref={menuRef} className="absolute top-10 right-0 border bg-white shadow-md p-2 rounded-md flex flex-col gap-1 justify-start w-36">
                     <div 
                         className="flex items-center gap-2 rounded-md p-1 hover:bg-zinc-100 cursor-pointer"
                         onClick={handleAtoZ}
@@ -106,7 +123,7 @@ export default function ProductFilter({ setFilteredProducts }) {
                         className="flex items-center gap-2 rounded-md p-1 hover:bg-zinc-100 cursor-pointer"
                         onClick={handleCategory}    
                     >
-                        <TbFilterDiscount className="text-sm text-zinc-600" />
+                        <BiCategory className="text-sm text-zinc-600" />
                         <p className='text-xs text-zinc-600'>Par catégorie</p>
                     </div>
                     
@@ -115,11 +132,11 @@ export default function ProductFilter({ setFilteredProducts }) {
         </div>
         <div className='relative bg-white hover:shadow-md border border-zinc-300 rounded-md p-1 cursor-pointer flex items-center justify-center'>
             <div onClick={handleFilterByCategory} className="flex items-center gap-1">
-                <TbFilterPlus />
+                <BiCategory />
                 <p className="text-sm">Catégories</p>
             </div>
             {filterByCategoryOpen && (
-                <div className="absolute top-10 right-0 border bg-white shadow-md p-2 rounded-md flex flex-col gap-1 justify-start w-36">
+                <div ref={menuCatRef} className="absolute top-10 right-0 border bg-white shadow-md p-2 rounded-md flex flex-col gap-1 justify-start w-36">
                     {categories.map((item) => (
                     <div 
                         key={item._id}

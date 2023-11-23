@@ -35,3 +35,19 @@ export const addCategory = async (req, res, next) => {
         next(error)
     }
 }
+
+export const deleteCategory = async (req, res, next) => {
+    const { id } = req.params
+
+    try {
+        if(!id) {
+            return next(errorHandler(404, `La catégorie n'existe pas.`))
+        }
+
+        await Category.findByIdAndDelete(id)
+
+        res.json({ message: `Catégorie supprimé avec succès `})
+    } catch (error) {
+        next(error.message)
+    }
+}

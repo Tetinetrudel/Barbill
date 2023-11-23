@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { deleteClient } from '../../redux/clients/clientSlice'
@@ -7,6 +7,7 @@ import { API_URL } from '../../utils/apiUrl'
 
 import { BsThreeDots } from "react-icons/bs"
 import { BiEdit, BiTrash } from 'react-icons/bi'
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 
 import Modal from '../../components/Modal'
 import ClientBill from './ClientBill'
@@ -19,6 +20,7 @@ export default function ClientDetails({ clientId, setClientId }) {
     const [actionsOpen, setActionsOpen] = useState(false)
     const [editClientOpen, setEditClientOpen] = useState(false)
     const dispatch = useDispatch()
+    const menuRef = useRef(null)
 
     if(!clientId) {
         return (
@@ -36,6 +38,19 @@ export default function ClientDetails({ clientId, setClientId }) {
         setEditClientOpen(!editClientOpen)
         setActionsOpen(!actionsOpen)
     }
+
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+          setActionsOpen(false)
+        }
+    }
+    
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
 
     const handleDelete = async () => {
         setActionsOpen(!actionsOpen)
@@ -60,6 +75,10 @@ export default function ClientDetails({ clientId, setClientId }) {
         }
     }
 
+    const handleSendBill = () => {
+
+    }
+
   return (
         <div className="flex flex-col w-full">
             <div className="flex items-center justify-between w-full py-4 px-10 border-b border-b-zinc-200">
@@ -77,13 +96,20 @@ export default function ClientDetails({ clientId, setClientId }) {
                     <div className="relative">
                         <BsThreeDots className="text-2xl cursor-pointer" onClick={handleAction}/>
                         {actionsOpen && (
-                            <div className="bg-white shadow-md p-4 absolute right-0 top-6 w-48">
+                            <div className="bg-white shadow-md p-4 absolute right-0 top-6 w-48" ref={menuRef}>
                                 <div 
                                     onClick={handleEdit} 
                                     className='flex gap-2 items-center w-full hover:bg-zinc-100 rounded-md py-1 px-3 cursor-pointer'
                                 >
                                     <BiEdit />
                                     <p className="text-sm">Mettre à jour</p>
+                                </div>
+                                <div 
+                                    onClick={handleSendBill} 
+                                    className='mt-2 flex gap-2 items-center w-full hover:bg-zinc-100 rounded-md py-1 px-3 cursor-pointer'
+                                >
+                                    <LiaFileInvoiceDollarSolid />
+                                    <p className="text-sm">Envoyer la facture</p>
                                 </div>
                                 <div 
                                     onClick={handleDelete} 
