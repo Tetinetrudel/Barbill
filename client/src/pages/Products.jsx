@@ -24,7 +24,7 @@ export default function Products() {
       </div>
       {addProductOpen && (
         <Modal title="Ajouter un produit" isModalOpen={addProductOpen} setIsModalOpen={setAddProductOpen}>
-          <AddProduct />
+          <AddProduct setAddProductOpen={setAddProductOpen} />
         </Modal>
       )} 
       <ProductsList />

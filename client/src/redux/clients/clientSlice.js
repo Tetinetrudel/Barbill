@@ -24,6 +24,9 @@ const clientSlice = createSlice({
     deleteClient: (state, action) => {
         state.clients =  state.clients.filter((client) => client._id !== action.payload)
     },
+    clearClients: (state) => {
+      state.clients = []
+    }
   },
 })
 
@@ -31,7 +34,8 @@ export const {
   getClients,
   addClient,
   updateClient,
-  deleteClient
+  deleteClient,
+  clearClients
 } = clientSlice.actions
 
 export default clientSlice.reducer

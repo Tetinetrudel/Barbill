@@ -1,12 +1,16 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './user/userSlice'
 import clientReducer from './clients/clientSlice'
+import categoryReducer from './categories/categorySlice'
+import productReducer from './products/productSlice'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 const rootReducer = combineReducers({ 
   user: userReducer,
-  client: clientReducer
+  client: clientReducer,
+  product: productReducer,
+  category: categoryReducer
 })
 
 const persistConfig = {

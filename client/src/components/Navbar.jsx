@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { signOutUserStart, deleteUserFailure, deleteUserSuccess } from '../redux/user/userSlice'
+import { clearCategories } from '../redux/categories/categorySlice'
+import { clearClients } from '../redux/clients/clientSlice'
+import { clearProducts } from '../redux/products/productSlice'
 
 import Logo from './logo/Logo'
 
@@ -41,6 +44,9 @@ export default function Navbar() {
             return
           }
           dispatch(deleteUserSuccess(data))
+          dispatch(clearCategories())
+          dispatch(clearClients())
+          dispatch(clearProducts())
           navigate('/login')
         } catch (error) {
           dispatch(deleteUserFailure(data.message))

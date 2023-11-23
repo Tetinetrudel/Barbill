@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { useSelector, useDispatch } from 'react-redux'
-
 import { getClients } from './redux/clients/clientSlice'
+import { getCategories } from './redux/categories/categorySlice'
+import { getProducts } from './redux/products/productSlice'
 
 import { API_URL } from './utils/apiUrl'
-
 
 import Layout from './layouts/Layout'
 import PrivateRoute from './layouts/PrivateRoute'
@@ -22,28 +22,69 @@ export default function App() {
   const { accessToken } = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    const handleGetClients = async () => {
-      try {
-        const response = await fetch(`${API_URL}/clients`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-          }
-        })
-        const data = await response.json()
-
-        if(response.success === false) {
-          console.error(data.message)
+  const handleGetClients = async () => {
+    try {
+      const response = await fetch(`${API_URL}/clients`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
         }
-
-        dispatch(getClients(data))
-      } catch (error) {
-        console.error(error)
+      })
+      const data = await response.json()
+      if(response.success === false) {
+        console.error(data.message)
       }
+
+      dispatch(getClients(data))
+    } catch (error) {
+      console.error(error)
     }
+  }
+
+  const handleGetProducts = async () => {
+    try {
+      const response = await fetch(`${API_URL}/products`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      })
+      const data = await response.json()
+      if(data.success === false) {
+        console.error(data.message)
+      }
+
+      dispatch(getProducts(data))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const handleGetCategories = async () => {
+    try {
+      const response = await fetch(`${API_URL}/categories`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      })
+      const data = await response.json()
+      if(data.success === false) {
+        console.error(data.message)
+      }
+      dispatch(getCategories(data))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
     handleGetClients()
+    handleGetProducts()
+    handleGetCategories()
   }, [accessToken])
 
   return (
