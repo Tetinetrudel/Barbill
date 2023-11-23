@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { signOutUserStart, deleteUserFailure, deleteUserSuccess } from '../redux/user/userSlice'
+import { signOutUserStart, deleteUserFailure, signOutUserSuccess } from '../redux/user/userSlice'
 import { clearCategories } from '../redux/categories/categorySlice'
 import { clearClients } from '../redux/clients/clientSlice'
 import { clearProducts } from '../redux/products/productSlice'
@@ -43,7 +43,7 @@ export default function Navbar() {
             dispatch(deleteUserFailure(data.message))
             return
           }
-          dispatch(deleteUserSuccess(data))
+          dispatch(signOutUserSuccess(data))
           dispatch(clearCategories())
           dispatch(clearClients())
           dispatch(clearProducts())
@@ -69,10 +69,10 @@ export default function Navbar() {
             </div>
         </form>
         <div className="flex items-center gap-4">
-            <div className="bg-whiteflex items-center hover:bg-zinc-200 rounded-md p-1 transition ease-linear duration-200">
+            <div className="bg-whiteflex items-center hover:bg-zinc-100 rounded-md p-1 transition ease-linear duration-200">
                 <BiSolidBell className="text-zinc-500 text-xl cursor-pointer"/>
             </div>
-            <div className="bg-whiteflex items-center hover:bg-zinc-200 rounded-md p-1 transition ease-linear duration-200">
+            <div className="bg-whiteflex items-center hover:bg-zinc-100 rounded-md p-1 transition ease-linear duration-200">
                 <BiSolidMessageRoundedDetail className="text-zinc-500 text-xl cursor-pointer"/>
             </div>
             <div className="rounded-full border-2 border-zinc-400 w-8 h-8">

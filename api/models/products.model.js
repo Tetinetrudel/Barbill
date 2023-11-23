@@ -17,6 +17,10 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
     },
+    popular: {
+        type: Boolean,
+        default: false
+    },
     quantity: {
         type: Number,
         default: 1

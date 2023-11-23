@@ -80,14 +80,14 @@ export default function ClientDetails({ clientId, setClientId }) {
                             <div className="bg-white shadow-md p-4 absolute right-0 top-6 w-48">
                                 <div 
                                     onClick={handleEdit} 
-                                    className='flex gap-2 items-center w-full hover:bg-zinc-200 rounded-md py-1 px-3 cursor-pointer'
+                                    className='flex gap-2 items-center w-full hover:bg-zinc-100 rounded-md py-1 px-3 cursor-pointer'
                                 >
                                     <BiEdit />
                                     <p className="text-sm">Mettre à jour</p>
                                 </div>
                                 <div 
                                     onClick={handleDelete} 
-                                    className='mt-2 flex gap-2 items-center w-full hover:bg-zinc-200 rounded-md py-1 px-3 cursor-pointer'
+                                    className='mt-2 flex gap-2 items-center w-full hover:bg-zinc-100 rounded-md py-1 px-3 cursor-pointer'
                                 >
                                     <BiTrash />
                                     <p className="text-sm">Spprimer</p>

@@ -41,6 +41,7 @@ const userSlice = createSlice({
     },
     deleteUserSuccess: (state) => {
       state.currentUser = null
+      state.accessToken = null
       state.loading = false
       state.error = null
     },
@@ -53,7 +54,7 @@ const userSlice = createSlice({
     },
     signOutUserSuccess: (state) => {
       state.currentUser = null
-      state.token = null
+      state.accessToken = null
       state.loading = false
       state.error = null
     },

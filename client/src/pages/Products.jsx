@@ -1,12 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import ProductsList from '../features/products/ProductsList'
 import AddProduct from '../features/products/AddProduct'
 
 import Modal from '../components/Modal'
+import ProductFilter from '../features/products/ProductFilter'
+import { useSelector } from 'react-redux'
 
 export default function Products() {
   const [addProductOpen, setAddProductOpen] = useState(false)
+  const { products } = useSelector((state) => state.product)
+  const [filteredProducts, setFilteredProducts] = useState([])
+
+  useEffect(() => {
+    setFilteredProducts(products)
+  }, [products])
 
   return (
     <main className="p-10">
@@ -20,14 +28,14 @@ export default function Products() {
             Ajouter
           </button>
         </div>
-        <h1>filter</h1>
+        <ProductFilter setFilteredProducts={setFilteredProducts} />
       </div>
       {addProductOpen && (
         <Modal title="Ajouter un produit" isModalOpen={addProductOpen} setIsModalOpen={setAddProductOpen}>
           <AddProduct setAddProductOpen={setAddProductOpen} />
         </Modal>
       )} 
-      <ProductsList />
+      <ProductsList filteredProducts={filteredProducts} />
     </main>
   )
 }
