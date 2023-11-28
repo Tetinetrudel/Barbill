@@ -16,11 +16,26 @@ import ClientEdit from './ClientEdit'
 
 export default function ClientDetails({ clientId, setClientId }) {
     const { clients } = useSelector((state) => state.client)
-    const { accessToken } = useSelector((state) => state.user) 
+    const { accessToken } = useSelector((state) => state.user)
+    const { currentUser } = useSelector((state) => state.user)
+    const userId = currentUser._id
     const [actionsOpen, setActionsOpen] = useState(false)
     const [editClientOpen, setEditClientOpen] = useState(false)
     const dispatch = useDispatch()
-    const menuRef = useRef(null)
+    const menuRef = useRef()
+
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+          setActionsOpen(false)
+        }
+    }
+    
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
 
     if(!clientId) {
         return (
@@ -39,19 +54,6 @@ export default function ClientDetails({ clientId, setClientId }) {
         setActionsOpen(!actionsOpen)
     }
 
-    const handleClickOutside = (event) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-          setActionsOpen(false)
-        }
-    }
-    
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [])
-
     const handleDelete = async () => {
         setActionsOpen(!actionsOpen)
         try {
@@ -64,23 +66,41 @@ export default function ClientDetails({ clientId, setClientId }) {
             })
             const data = await res.json()
             if(data.success === false) {
-                console.log(error)
+                alert(data.message)
                 return
             }
             
             dispatch(deleteClient(clientId))
             setClientId(undefined)
         } catch (error) {
-            console.error(error)
+            console.error(error.message)
         }
     }
 
-    const handleSendBill = () => {
 
-    }
+    const handleSendBill = async () => {
+        try {
+            const response = await fetch(`${API_URL}/email/${clientId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ clientEmail: client[0].email })
+            });
+  
+            if (response.ok) {
+                console.log('Bill email sent successfully.');
+            } else {
+                console.error('Failed to send bill email.');
+            }
+        } catch (error) {
+            console.error('Error sending bill:', error);
+        }
+    };
+  
 
   return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full h-full">
             <div className="flex items-center justify-between w-full py-4 px-10 border-b border-b-zinc-200">
                 <div className="flex items-start gap-2">
                     <div className="flex flex-col items-start">
@@ -88,7 +108,7 @@ export default function ClientDetails({ clientId, setClientId }) {
                         <p className="text-xs text-zinc-400">{client[0].email}</p>
                     </div>
                     {client[0].status 
-                        ? <span className="bg-red-600">Montant dû</span>
+                        ? <span className="mt-1 bg-red-100 border border-red-600 text-red-600 rounded-md text-sm px-3 flex items-center justify-center">Montant dû</span>
                             : <span className="mt-1 bg-green-100 border border-green-600 text-green-600 rounded-md text-sm px-3 flex items-center justify-center">Rien à payer</span>
                     }
                 </div>
@@ -124,8 +144,8 @@ export default function ClientDetails({ clientId, setClientId }) {
                 </div>
             </div>
             <div className="p-4 flex flex-col gap-10">
-                <ClientBill />
-                <ClientCards />
+                <ClientBill clientId={clientId} />
+                <ClientCards clientId={clientId} />
             </div>
             {editClientOpen && (
                 <Modal title="Modifier un client" isModalOpen={editClientOpen} setIsModalOpen={setEditClientOpen}>

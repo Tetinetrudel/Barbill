@@ -38,6 +38,10 @@ const clientSchema = new mongoose.Schema({
             count: {
                 type: Number,
                 default: 10
+            },
+            AddedAt: {
+                type: Date,
+                default: new Date
             }
         }
     ],

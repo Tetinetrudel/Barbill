@@ -38,7 +38,7 @@ export const addProduct = async (req, res, next) => {
             return next(errorHandler(403, `Un nom, une catégorie, une quantity et un prix doivent être inclus dans le formulaire de création`))
         }
 
-        let uploadImage = image ? image : ""
+        let uploadImage = image ? image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
         const existingProduct = await Product.findOne({ user: req.user.id, name })
         if(existingProduct) {
             return next(errorHandler(409, `Le produit ${name} existe déjà`))
