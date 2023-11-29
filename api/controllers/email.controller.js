@@ -2,10 +2,8 @@ import User from '../models/users.model.js'
 import Client from '../models/clients.model.js'
 import { Resend } from "resend"
 
-const resend = new Resend("re_S9WGiS72_8qp3WTPmQ5gaDp7CBkgDTxDW")
-resend.domains.create({ name: 'dekkia.ca' })
-
 export const sendEmail = async ( req, res ) => {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     try {
         const { userId, clientId } = req.body
         const user = await User.findById({ _id: userId })
