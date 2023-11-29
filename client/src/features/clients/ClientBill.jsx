@@ -39,6 +39,7 @@ export default function ClientBill({ clientId }) {
             if(data.success === false) {
                 setLoading(false)
                 setError("data.message")
+                return
             }
             setLoading(false)
             dispatch(updateClient(data))
