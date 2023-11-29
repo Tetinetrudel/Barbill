@@ -14,38 +14,39 @@ import { API_URL } from '../../utils/apiUrl'
 import ClipLoader from 'react-spinners/ClipLoader'
 
 export default function ClientBill({ clientId }) {
-  const [addToBillOpen, setAddToBillOpen] = useState(false)
-  const { clients } = useSelector((state) => state.client)
-  const { accessToken } = useSelector((state) => state.user)
-  const client = clients.filter((item) => item._id === clientId)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const dispatch = useDispatch()
-  const created = (date) => new Date(date).toLocaleString('fr-CA', { day: 'numeric', month: 'numeric', year: 'numeric'})
+    const [addToBillOpen, setAddToBillOpen] = useState(false)
+    const { clients } = useSelector((state) => state.client)
+    const { accessToken } = useSelector((state) => state.user)
+    const client = clients.filter((item) => item._id === clientId)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
+    const dispatch = useDispatch()
 
-  const handleDelete = async (productId) => {
-      try {
-          setLoading(true)
-          const response = await fetch(`${API_URL}/clients/${clientId}/remove`, {
-              method: 'PATCH',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${accessToken}`
-              },
-              body: JSON.stringify({ productId })
-          })
-          const data = await response.json()
-          if(data.success === false) {
-              setLoading(false)
-              setError("data.message")
-          }
-          setLoading(false)
-          dispatch(updateClient(data))
-      } catch (error) {
+    const created = (date) => new Date(date).toLocaleString('fr-CA', { day: 'numeric', month: 'numeric', year: 'numeric'})
+        
+    const handleDelete = async (productId) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`${API_URL}/clients/${clientId}/remove`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({ productId })
+            })
+            const data = await response.json()
+            if(data.success === false) {
+                setLoading(false)
+                setError("data.message")
+            }
             setLoading(false)
-            setError(error)
-      }
-  }
+            dispatch(updateClient(data))
+        } catch (error) {
+                setLoading(false)
+                setError(error)
+        }
+    }
 
   return (
     <section>

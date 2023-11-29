@@ -24,6 +24,7 @@ export default function ClientDetails({ clientId, setClientId }) {
     const dispatch = useDispatch()
     const menuRef = useRef()
 
+    //popup menu functionnality
     const handleClickOutside = (event) => {
         if (menuRef.current && !menuRef.current.contains(event.target)) {
           setActionsOpen(false)
@@ -37,6 +38,7 @@ export default function ClientDetails({ clientId, setClientId }) {
         }
     }, [])
 
+    //if no client founded, return something to prevent bug
     if(!clientId) {
         return (
             <div className="flex items-center justify-center h-full">
@@ -47,6 +49,21 @@ export default function ClientDetails({ clientId, setClientId }) {
 
     const client = clients.filter((item) => item._id === clientId)
 
+    //Date and bill status functionnality
+    const firstDate = client[0].bill.length > 0 ? new Date(client[0].bill[0].AddedAt) : null
+    const today = new Date()
+    const dateDiff = (today - firstDate) / (1000 * 3600 * 24)
+
+    let since
+    if(dateDiff > 0 && dateDiff < 30) {
+        since = <span className="mt-1 bg-yellow-100 border border-yellow-600 text-yellow-600 rounded-md text-sm px-3 flex items-center justify-center">Montant dû</span>
+    }
+
+    if(dateDiff >= 30) {
+        since = <span className="mt-1 bg-red-100 border border-red-600 text-red-600 rounded-md text-sm px-3 flex items-center justify-center">En souffrance</span>
+    }
+
+    //action made by clicking something
     const handleAction = () => setActionsOpen(!actionsOpen)
 
     const handleEdit = () => {
@@ -80,12 +97,12 @@ export default function ClientDetails({ clientId, setClientId }) {
 
     const handleSendBill = async () => {
         try {
-            const response = await fetch(`${API_URL}/email/${clientId}`, {
+            const response = await fetch(`${API_URL}/email`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ clientEmail: client[0].email })
+                body: JSON.stringify({ userId, clientId })
             });
   
             if (response.ok) {
@@ -96,9 +113,9 @@ export default function ClientDetails({ clientId, setClientId }) {
         } catch (error) {
             console.error('Error sending bill:', error);
         }
-    };
+    }
   
-
+    //render the page on the web
   return (
         <div className="flex flex-col w-full h-full">
             <div className="flex items-center justify-between w-full py-4 px-10 border-b border-b-zinc-200">
@@ -107,9 +124,8 @@ export default function ClientDetails({ clientId, setClientId }) {
                         <h1 className="text-blue-600 text-xl font-semibold">{client[0].name}</h1>
                         <p className="text-xs text-zinc-400">{client[0].email}</p>
                     </div>
-                    {client[0].status 
-                        ? <span className="mt-1 bg-red-100 border border-red-600 text-red-600 rounded-md text-sm px-3 flex items-center justify-center">Montant dû</span>
-                            : <span className="mt-1 bg-green-100 border border-green-600 text-green-600 rounded-md text-sm px-3 flex items-center justify-center">Rien à payer</span>
+                    {client[0].status ? since 
+                        : <span className="mt-1 bg-green-100 border border-green-600 text-green-600 rounded-md text-sm px-3 flex items-center justify-center">Rien à payer</span>
                     }
                 </div>
                 <div>
@@ -124,6 +140,7 @@ export default function ClientDetails({ clientId, setClientId }) {
                                     <BiEdit />
                                     <p className="text-sm">Mettre à jour</p>
                                 </div>
+                                {dateDiff >= 30 ? (
                                 <div 
                                     onClick={handleSendBill} 
                                     className='mt-2 flex gap-2 items-center w-full hover:bg-zinc-100 rounded-md py-1 px-3 cursor-pointer'
@@ -131,6 +148,7 @@ export default function ClientDetails({ clientId, setClientId }) {
                                     <LiaFileInvoiceDollarSolid />
                                     <p className="text-sm">Envoyer la facture</p>
                                 </div>
+                                ) : null }
                                 <div 
                                     onClick={handleDelete} 
                                     className='mt-2 flex gap-2 items-center w-full hover:bg-zinc-100 rounded-md py-1 px-3 cursor-pointer'

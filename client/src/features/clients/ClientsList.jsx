@@ -21,7 +21,7 @@ export default function ClientsList({ setClientId }) {
             )}
             {filteredClient && filteredClient.map((item, index) => (
                 <div 
-                    className="flex justify-between items-center mx-4 hover:bg-zinc-100 rounded-md cursor-pointer"
+                    className="flex justify-between items-center pr-4 mx-4 hover:bg-zinc-100 rounded-md cursor-pointer"
                     key={index}
                     onClick={() => setClientId(item._id)}
                 >
@@ -34,7 +34,15 @@ export default function ClientsList({ setClientId }) {
                             <p className="text-xs">{item.email}</p>
                         </div>
                     </div>
-                    <div></div>
+                    <div 
+                        className={`
+                            flex items-center justify-center rounded-md p-2 border ${item.status 
+                                ? "bg-red-100 text-red-600 border-red-600" 
+                                : "bg-green-100 text-green-600 border-green-600"  }
+                            `}
+                    >
+                        <p className="text-sm font-semibold">{(item.bill.reduce((sum, product) => sum + product.product.price, 0))} $</p>
+                    </div>
                 </div>
             ))}
         </div>
