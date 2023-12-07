@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { updateClient } from '../../redux/clients/clientSlice'
+import { addDailySales } from '../../redux/sales/salesSlice'
 
 import Modal from '../../components/Modal'
 import AddToBill from './AddToBill'
@@ -49,6 +50,32 @@ export default function ClientBill({ clientId }) {
         }
     }
 
+    const handleCharge = async (item) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`${API_URL}/clients/${clientId}/remove`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({ productId: item._id })
+            })
+            const data = await response.json()
+            if(data.success === false) {
+                setLoading(false)
+                setError("data.message")
+                return
+            }
+            setLoading(false)
+            dispatch(updateClient(data))
+            dispatch(addDailySales(item.product))
+        } catch (error) {
+            setLoading(false)
+            setError(error)
+        }
+    }
+
   return (
     <section>
         <div className="flex justify-between items-center">
@@ -58,7 +85,7 @@ export default function ClientBill({ clientId }) {
             className="bg-blue-600 hover:opacity-95 hover:shadow-md py-1 px-4 flex items-center justify-center flex-none text-white rounded-md text-sm"
           >Ajouter</button>
         </div>
-        <div className="shadow bg-white rounded-md p-4 h-auto w-full">
+        <div className="shadow bg-white rounded-md p-4 h-auto w-full mt-4">
             <div className="grid grid-cols-12 text-xs font-bold mb-2">
                 <div className='col-span-6 py-1 px-4'>Produit</div>
                 <div className='col-span-2 py-1 px-4'>Date ajouté</div>
@@ -82,7 +109,7 @@ export default function ClientBill({ clientId }) {
                         {loading ? <ClipLoader size={10} />
                             : <FaRegTrashAlt onClick={() => handleDelete(item._id)} className="cursor-pointer text-md text-red-600 hover:text-red-800" />
                         }
-                        <BsCreditCard2Back className="text-lg text-blue-600 hover:text-blue-800 cursor-pointer" />
+                        <BsCreditCard2Back className="text-lg text-blue-600 hover:text-blue-800 cursor-pointer" onClick={() => handleCharge(item)}/>
                       </div>
                 </div>
             ))}

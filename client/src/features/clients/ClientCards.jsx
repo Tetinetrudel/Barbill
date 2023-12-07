@@ -71,7 +71,7 @@ export default function ClientCards({ clientId }) {
         <div className="flex justify-between items-center">
           <h2 className="text-blue-600 font-semibold text-sm uppercase">Carte</h2>
         </div>
-        <div className="shadow bg-white rounded-md p-4 h-auto w-full">
+        <div className="shadow bg-white rounded-md p-4 h-auto w-full mt-4">
             <div className="grid grid-cols-12 text-xs font-bold mb-2">
                 <div className='col-span-8 py-1 px-4'>Produit</div>
                 <div className='col-span-2 py-1 px-4'>Date ajouté</div>

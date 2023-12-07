@@ -5,6 +5,7 @@ import { signOutUserStart, deleteUserFailure, signOutUserSuccess } from '../redu
 import { clearCategories } from '../redux/categories/categorySlice'
 import { clearClients } from '../redux/clients/clientSlice'
 import { clearProducts } from '../redux/products/productSlice'
+import { clearDailySales } from '../redux/sales/salesSlice'
 
 import Logo from './logo/Logo'
 
@@ -47,6 +48,7 @@ export default function Navbar() {
           dispatch(clearCategories())
           dispatch(clearClients())
           dispatch(clearProducts())
+          dispatch(clearDailySales())
           navigate('/login')
         } catch (error) {
           dispatch(deleteUserFailure(data.message))
@@ -78,15 +80,15 @@ export default function Navbar() {
             <div className="rounded-full border-2 border-zinc-400 w-8 h-8">
                 <img 
                     className='w-full h-full object-cover rounded-full cursor-pointer'
-                    src={currentUser.avatar ? currentUser.avatar 
-                    : "https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/Sales_Blog/real-estate-business-compressor.jpg?width=595&height=400&name=real-estate-business-compressor.jpg"}
+                    src={!currentUser ? "https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/Sales_Blog/real-estate-business-compressor.jpg?width=595&height=400&name=real-estate-business-compressor.jpg"
+                            : currentUser.avatar }
                     alt="logo de l'entreprise" 
                     onClick={() => setOpen(!open)}
                 />
             </div>
         </div>
         {open && (
-            <div className="bg-white shadow-md w-64 py-3 absolute top-[66px] right-16">
+            <div className="bg-white shadow-md w-64 py-3 absolute top-[66px] right-16 z-50">
                 <div className="flex flex-col gap-2 items-center border-b border-b-zinc-200">
                     <h1 className="text-sm font-semibold">{currentUser.company}</h1>
                     <button 

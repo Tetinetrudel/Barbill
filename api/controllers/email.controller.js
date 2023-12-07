@@ -1,8 +1,9 @@
 import User from '../models/users.model.js'
 import Client from '../models/clients.model.js'
 import { Resend } from "resend"
+import { errorHandler } from '../middleware/errorHandler.js'
 
-export const sendEmail = async ( req, res ) => {
+export const sendEmail = async ( req, res, next ) => {
     const resend = new Resend(process.env.RESEND_API_KEY)
     try {
         const { userId, clientId } = req.body
@@ -14,9 +15,9 @@ export const sendEmail = async ( req, res ) => {
             subject: "hello world",
             html: htmlTemplate(client, user)
         })
-        res.status(200).json(data)
+        res.json(data)
     } catch (error) {
-        res.status(500).json(error.message)
+        next(errorHandler(500, `Problème lors de l'envoi du message. Veillez recommencer`))
     }
 }
 

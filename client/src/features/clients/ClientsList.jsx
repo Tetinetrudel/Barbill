@@ -34,15 +34,7 @@ export default function ClientsList({ setClientId }) {
                             <p className="text-xs">{item.email}</p>
                         </div>
                     </div>
-                    <div 
-                        className={`
-                            flex items-center justify-center rounded-md p-2 border ${item.status 
-                                ? "bg-red-100 text-red-600 border-red-600" 
-                                : "bg-green-100 text-green-600 border-green-600"  }
-                            `}
-                    >
-                        <p className="text-sm font-semibold">{(item.bill.reduce((sum, product) => sum + product.product.price, 0))} $</p>
-                    </div>
+                    <div></div>
                 </div>
             ))}
         </div>

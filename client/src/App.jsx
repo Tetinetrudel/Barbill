@@ -82,6 +82,7 @@ export default function App() {
   }
 
   useEffect(() => {
+    if(!accessToken) return
     handleGetClients()
     handleGetProducts()
     handleGetCategories()
