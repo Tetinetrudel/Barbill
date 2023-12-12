@@ -17,6 +17,9 @@ import Products from './pages/Products'
 import Clients from './pages/Clients'
 import Settings from './pages/Settings'
 import Profile from './pages/Profile'
+import SettingsLayout from './layouts/Settingslayout'
+import Inventory from './pages/Inventory'
+import Reports from './pages/Reports'
 
 export default function App() {
   const { accessToken } = useSelector((state) => state.user)
@@ -104,12 +107,21 @@ export default function App() {
             <Route index element={<Clients />} />
           </Route>
 
-          <Route path="/settings">
+          <Route path="/settings" element={<SettingsLayout />}>
             <Route index element={<Settings />} />
+            <Route path="/settings/category" element={<h1>Catégories</h1>} />
           </Route>
 
           <Route path="/profile">
             <Route index element={<Profile />} />
+          </Route>
+
+          <Route path="/inventory">
+            <Route index element={<Inventory />} />
+          </Route>
+
+          <Route path="/reports">
+            <Route index element={<Reports />} />
           </Route>
         </Route>
       </Route>

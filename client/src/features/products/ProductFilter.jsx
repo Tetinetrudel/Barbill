@@ -59,8 +59,10 @@ export default function ProductFilter({ setFilteredProducts }) {
     }
 
     const handleByCategory = (id) => {
-        if(!id) {
+        if(id === null) {
             setFilteredProducts(products)
+            setFilterByCategoryOpen(!filterByCategoryOpen)
+            setFilterOpen(false)
             return
         }
         const filtered = products.filter((item) => item.category._id === id)
@@ -137,6 +139,14 @@ export default function ProductFilter({ setFilteredProducts }) {
             </div>
             {filterByCategoryOpen && (
                 <div ref={menuCatRef} className="absolute top-10 right-0 border bg-white shadow-md p-2 rounded-md flex flex-col gap-1 justify-start w-36">
+                    <div 
+                        className="flex items-center gap-2 rounded-md p-1 hover:bg-zinc-100 cursor-pointer"
+                        onClick={() => handleByCategory(null)}
+                    >
+                    
+                        <TbFilterDown className="text-sm text-zinc-600" />
+                        <p className='text-xs text-zinc-600'>Tous</p>
+                    </div>
                     {categories.map((item) => (
                     <div 
                         key={item._id}
