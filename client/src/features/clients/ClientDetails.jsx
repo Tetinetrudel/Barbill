@@ -140,7 +140,7 @@ export default function ClientDetails({ clientId, setClientId }) {
                                     <BiEdit />
                                     <p className="text-sm">Mettre à jour</p>
                                 </div>
-                                {dateDiff >= 30 ? (
+                                {dateDiff > 30 && dateDiff === 0 ? (
                                 <div 
                                     onClick={handleSendBill} 
                                     className='mt-2 flex gap-2 items-center w-full hover:bg-zinc-100 rounded-md py-1 px-3 cursor-pointer'

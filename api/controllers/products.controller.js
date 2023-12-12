@@ -1,5 +1,6 @@
 import Product from '../models/products.model.js'
 import Category from '../models/categories.model.js'
+import Client from '../models/clients.model.js'
 
 import { errorHandler } from '../middleware/errorHandler.js'
 
@@ -117,6 +118,17 @@ export const deleteProduct = async (req, res, next) => {
     try {
         if(!id) {
             return next(errorHandler(404, `Le client n'existe pas.`))
+        }
+        
+        const clientsWithProduct = await Client.find({ user: req.user.id,
+            $or: [
+                { 'bill.product': id },
+                { 'cards.product': id }
+            ]
+        })
+
+        if (clientsWithProduct.length > 0) {
+            return next(errorHandler(404, `Le produit est associé à un client et ne peut pas être supprimé.`))
         }
 
         await Product.findByIdAndDelete(id)

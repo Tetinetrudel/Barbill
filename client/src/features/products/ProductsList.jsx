@@ -69,7 +69,7 @@ export default function ProductsList({ filteredProducts }) {
           })
           const data = await res.json()
           if(data.success === false) {
-              console.log(error)
+              alert(data.message)
               return
           }
           dispatch(deleteProduct(productId))
@@ -97,7 +97,7 @@ export default function ProductsList({ filteredProducts }) {
       )}
 
       {filteredProducts.length > 0 && filteredProducts.map((product) => (
-      <div className="grid grid-cols-12 bg-white shadow-md rounded-md hover:shadow-lg cursor-pointer mb-4 items-center">
+      <div key={product._id} className="grid grid-cols-12 bg-white shadow-md rounded-md hover:shadow-lg cursor-pointer mb-4 items-center">
           <div className='col-span-1 py-1 px-4'>
               <div className="rounded-full border-2 border-zinc-400 w-8 h-8">
                   <img            

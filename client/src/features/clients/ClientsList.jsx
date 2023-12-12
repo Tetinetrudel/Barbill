@@ -7,6 +7,11 @@ export default function ClientsList({ setClientId }) {
     const { clients } = useSelector((state) => state.client)
     const [filteredClient, setFilteredClient] = useState([])
 
+    const handleClientId = (clientId) => {
+        setClientId(clientId)
+        setFilteredClient(clients)
+    }
+    
     useEffect(() => {
         setFilteredClient(clients)
     }, [clients])
@@ -23,7 +28,7 @@ export default function ClientsList({ setClientId }) {
                 <div 
                     className="flex justify-between items-center pr-4 mx-4 hover:bg-zinc-100 rounded-md cursor-pointer"
                     key={index}
-                    onClick={() => setClientId(item._id)}
+                    onClick={() => handleClientId(item._id)}
                 >
                     <div className="flex item-center gap-1 py-2 px-4">
                         <span className="flex items-center justify-center text-sm font-semibold bg-zinc-400 rounded-md px-3">
