@@ -92,7 +92,7 @@ export default function PaymentPanel() {
           </div>
           <div className="mt-6">
                 {dailySales && uniqueProducts.map((sales) => (
-                    <div className='flex items-center justify-between'>
+                    <div key={sales._id} className='flex items-center justify-between'>
                       <p>{sales.name}</p>
                       <div className="flex items-center gap-x-3">
                           <div className='flex items-center justify-between w-full border border-zinc-300 rounded-md px-2'>

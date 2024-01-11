@@ -8,6 +8,9 @@ export default function SettingsLayout() {
             <Link to="/settings/category">
                 <h2>Catégories</h2>
             </Link>
+            <Link to="/settings/employee">
+                <h2>Employés</h2>
+            </Link>
         </nav>
         <main className='col-span-10'>
             <Outlet />

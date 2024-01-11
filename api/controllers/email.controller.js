@@ -12,7 +12,7 @@ export const sendEmail = async ( req, res, next ) => {
         const data = await resend.emails.send({
             from: 'Dek Kia <onboarding@resend.dev>',
             to: client.email,
-            subject: "hello world",
+            subject: "Facture en souffrance",
             html: htmlTemplate(client, user)
         })
         res.json(data)
@@ -23,6 +23,9 @@ export const sendEmail = async ( req, res, next ) => {
 
 const htmlTemplate = (client, user) => {
     const totalBill = client.bill.reduce((sum, product) => sum + product.product.price, 0)
+    const firstDate = client.bill.length > 0 ? new Date(client.bill[0].AddedAt) : null
+    const today = new Date()
+    const dateDiff = Math.round((today - firstDate) / (1000 * 3600 * 24))
     const productsHTML = client.bill.map(product => `
         <tr>
             <td>
@@ -39,7 +42,7 @@ const htmlTemplate = (client, user) => {
         </div> 
         <div>
             <p><span style="font-size: 20px; color: blue;">${client.name}</span>
-            <p>Votre compte est actuellement en souffrance de {{# de jour}}<p>
+            <p>Votre compte est actuellement en souffrance de ${dateDiff} jours<p>
         </div>
         <table width="300px">
             <thead>

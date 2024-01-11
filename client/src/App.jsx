@@ -17,7 +17,7 @@ import Products from './pages/Products'
 import Clients from './pages/Clients'
 import Settings from './pages/Settings'
 import Profile from './pages/Profile'
-import SettingsLayout from './layouts/Settingslayout'
+import SettingsLayout from './layouts/SettingsLayout'
 import Inventory from './pages/Inventory'
 import Reports from './pages/Reports'
 
@@ -110,6 +110,7 @@ export default function App() {
           <Route path="/settings" element={<SettingsLayout />}>
             <Route index element={<Settings />} />
             <Route path="/settings/category" element={<h1>Catégories</h1>} />
+            <Route path="/settings/employee" element={<h1>Employés</h1>} />
           </Route>
 
           <Route path="/profile">
