@@ -6,6 +6,8 @@ import { API_URL } from '../../utils/apiUrl'
 
 import ClipLoader from 'react-spinners/ClipLoader'
 
+import ErrorSnippet from '../../components/ErrorSnippet'
+
 export default function ClientAdd({ setAddClientOpen }) {
     const { accessToken } = useSelector((state) => state.user)
     const [formData, setFormData] = useState({})
@@ -76,8 +78,8 @@ export default function ClientAdd({ setAddClientOpen }) {
             {loading ? <ClipLoader size={10} color={"#fff"} /> : "Ajouter" }
         </button>
         {error && (
-            <p className="text-xs text-red-600">{error}</p>
-        )}
+                <ErrorSnippet error={error} setError={setError} />
+            )}
     </form>
   )
 }

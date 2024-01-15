@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { updateClient } from '../../redux/clients/clientSlice'
 import { API_URL } from '../../utils/apiUrl'
 
+import ErrorSnippet from '../../components/ErrorSnippet'
+
 export default function ClientEdit({ setEditClientOpen, clientId }) {
     const { accessToken } = useSelector((state) => state.user)
     const { clients } = useSelector((state) => state.client)
@@ -85,7 +87,9 @@ export default function ClientEdit({ setEditClientOpen, clientId }) {
         <button className='bg-blue-600 hover:opacity-95 text-white p-1 rounded-md text-sm'>
             {loading ? "Loading ..." : "Modifier" }
         </button>
-        {error && ( <p className="text-xs text-red-600">{error}</p>)}
+        {error && (
+                <ErrorSnippet error={error} setError={setError} />
+            )}
     </form>
   )
 }

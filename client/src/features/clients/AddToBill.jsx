@@ -7,6 +7,8 @@ import { AiOutlinePlus } from 'react-icons/ai'
 import { BiSearch, BiChevronDown, BiChevronUp } from 'react-icons/bi'
 import { API_URL } from '../../utils/apiUrl'
 
+import ErrorSnippet from '../../components/ErrorSnippet'
+
 import ClipLoader from 'react-spinners/ClipLoader'
 
 export default function AddToBill({ clientId }){
@@ -107,6 +109,9 @@ export default function AddToBill({ clientId }){
                     )}
                 </div>
             ))}
+            {error && (
+                <ErrorSnippet error={error} setError={setError} />
+            )}
         </div>
     </div>
   )

@@ -12,6 +12,8 @@ import { BsCreditCard2Back } from "react-icons/bs"
 
 import { API_URL } from '../../utils/apiUrl'
 
+import ErrorSnippet from '../../components/ErrorSnippet'
+
 import ClipLoader from 'react-spinners/ClipLoader'
 
 export default function ClientBill({ clientId }) {
@@ -125,6 +127,9 @@ export default function ClientBill({ clientId }) {
             <AddToBill clientId={clientId} />
           </Modal>
         )}
+        {error && (
+                <ErrorSnippet error={error} setError={setError} />
+            )}
     </section>
   )
 }

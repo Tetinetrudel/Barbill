@@ -8,6 +8,8 @@ import { app } from '../../firebase'
 
 import { API_URL } from '../../utils/apiUrl'
 
+import ErrorSnippet from '../../components/ErrorSnippet'
+
 export default function EditProduct({ productId, setProductId, setEditProductOpen }) {
   const { accessToken } = useSelector((state) => state.user)
   const { products } = useSelector((state) => state.product)
@@ -162,7 +164,9 @@ export default function EditProduct({ productId, setProductId, setEditProductOpe
         <button className='bg-blue-600 hover:opacity-95 text-white p-1 rounded-md text-sm'>
             {loading ? "Loading ..." : "Modifier" }
         </button>
-        {error && (<p className="text-xs text-red-600">{error}</p>)}
+        {error && (
+                <ErrorSnippet error={error} setError={setError} />
+            )}
     </form>
   )
 }

@@ -13,6 +13,7 @@ import Modal from '../../components/Modal'
 import ClientBill from './ClientBill'
 import ClientCards from './ClientCards'
 import ClientEdit from './ClientEdit'
+import ErrorSnippet from '../../components/ErrorSnippet'
 
 export default function ClientDetails({ clientId, setClientId }) {
     const { clients } = useSelector((state) => state.client)
@@ -21,6 +22,7 @@ export default function ClientDetails({ clientId, setClientId }) {
     const userId = currentUser._id
     const [actionsOpen, setActionsOpen] = useState(false)
     const [editClientOpen, setEditClientOpen] = useState(false)
+    const [error, setError] = useState("")
     const dispatch = useDispatch()
     const menuRef = useRef()
 
@@ -83,7 +85,7 @@ export default function ClientDetails({ clientId, setClientId }) {
             })
             const data = await res.json()
             if(data.success === false) {
-                alert(data.message)
+                setError(data.message)
                 return
             }
             
@@ -169,6 +171,9 @@ export default function ClientDetails({ clientId, setClientId }) {
                 <Modal title="Modifier un client" isModalOpen={editClientOpen} setIsModalOpen={setEditClientOpen}>
                     <ClientEdit clientId={clientId} setEditClientOpen={setEditClientOpen} />
                 </Modal>
+            )}
+            {error && (
+                <ErrorSnippet error={error} setError={setError} />
             )}
         </div>
       )
