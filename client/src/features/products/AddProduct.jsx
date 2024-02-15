@@ -179,7 +179,7 @@ export default function AddProduct({ setAddProductOpen }) {
         <div className='w-full flex flex-col gap-1 items-start'>
             <label htmlFor="price" className='text-xs font-semibold text-blue-600'>Prix</label>
             <input 
-                type="number"
+                type="text"
                 className='w-full rounded-md border border-zinc-200 focus:border-blue-600 outline-none py-1 px-2 bg-white text-sm'
                 id="price"
                 autoComplete='off'

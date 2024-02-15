@@ -66,6 +66,7 @@ export const updateProduct = async (req, res, next) => {
     const { image, name, category, quantity, price } = req.body
     try {
         const product = await Product.findById(id)
+        const cat = await Category.findOne({ name: category })
 
         if(!name || !category || !quantity || !price) {
             return next(errorHandler(403, `Un nom, une catégorie, une quantity et un prix doivent être inclus dans le formulaire de création`))
@@ -79,7 +80,7 @@ export const updateProduct = async (req, res, next) => {
 
         product.image = uploadImage
         product.name = name
-        product.category = category
+        product.category = cat._id
         product.quantity = quantity
         product.price = price
 

@@ -17,7 +17,7 @@ export default function EditProduct({ productId, setProductId, setEditProductOpe
   const [formData, setFormData] = useState({
     image: product[0].image,
     name: product[0].name,
-    category: product[0].category._id,
+    category: product[0].category.name,
     quantity: product[0].quantity,
     price: product[0].price
   })
@@ -81,6 +81,7 @@ export default function EditProduct({ productId, setProductId, setEditProductOpe
         if(data.success === false) {
             setLoading(false)
             setError(data.message)
+            return
         }
         const product = await fetch(`${API_URL}/products/${data._id}`, {
             method: 'GET',
@@ -123,7 +124,7 @@ export default function EditProduct({ productId, setProductId, setEditProductOpe
                 className='placeholder:text-black w-full rounded-md border border-zinc-200 focus:border-blue-600 outline-none py-1 px-2 bg-white text-sm'
                 id="name"
                 autoComplete='off'
-                placeholder={product[0].name}
+                value={formData.name}
                 onChange={handleChange}
             />
         </div>
@@ -134,7 +135,7 @@ export default function EditProduct({ productId, setProductId, setEditProductOpe
                 className='placeholder:text-black w-full rounded-md border border-zinc-200 focus:border-blue-600 outline-none py-1 px-2 bg-white text-sm'
                 id="category"
                 autoComplete='off'
-                placeholder={product[0].category.name}
+                value={formData.category}
                 disabled
                 onChange={handleChange}
             />
@@ -146,18 +147,18 @@ export default function EditProduct({ productId, setProductId, setEditProductOpe
                 className='placeholder:text-black w-full rounded-md border border-zinc-200 focus:border-blue-600 outline-none py-1 px-2 bg-white text-sm'
                 id="quantity"
                 autoComplete='off'
-                placeholder={product[0].quantity}
+                value={formData.quantity}
                 onChange={handleChange}
             />
         </div>
         <div className='w-full flex flex-col gap-1 items-start'>
             <label htmlFor="price" className='text-xs font-semibold text-blue-600'>Prix</label>
             <input 
-                type="number"
+                type="text"
                 className='placeholder:text-black w-full rounded-md border border-zinc-200 focus:border-blue-600 outline-none py-1 px-2 bg-white text-sm'
                 id="price"
                 autoComplete='off'
-                placeholder={product[0].price}
+                value={formData.price}
                 onChange={handleChange}
             />
         </div>
